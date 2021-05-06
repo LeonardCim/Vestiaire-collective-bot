@@ -1,5 +1,6 @@
 # Vestiaire-collective-bot
-Hi, this program written in python takes and reorders your sales data on Vestiaire Collective in a csv sheet. Useful for those who want to monitor or analyze their career as a seller on the French site.  Here you can see the various libraries I have used: -Bs4 (BeautifulSoup) 
+Hi, this program written in python takes and reorders your sales data on Vestiaire Collective in a csv sheet. Useful for those who want to monitor or analyze their career as a seller on the French site.  Here you can see the various libraries I have used: 
+- Bs4 (BeautifulSoup) 
 - ConfigParser
 - Selenium 
 - Datetime 
