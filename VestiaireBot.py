@@ -9,8 +9,10 @@ import run_once
 import datetime
 import shutil
 import time
+import sys
 import csv
 import os
+
 
 
 
@@ -22,11 +24,10 @@ Now press enter and paste the address in the space provided
 and conclude by pressing enter again and subsequently entering the other data to complete the operation.''')
 
 
-
 from ClassLoginVestiaire import Login
 
 link_page = Login.url("\nEnter the page address: ")
-profile, password, question = Login.login_profile("\nPut your profile email: ", "\nEnter your profile password: ", "\nWrite <v> if you want to continue or <x> if you want to write the email and password again: ")
+password, question = Login.login_profile("\nEnter your profile password: ", "\nWrite <v> if you want to continue or <x> if you want to write the email and password again: ")
 pages = Login.pages_to_be_analyzed("\nEnter the number of pages you want to analyze: ")
 
 
@@ -34,17 +35,17 @@ pages = Login.pages_to_be_analyzed("\nEnter the number of pages you want to anal
 config = ConfigParser()
 
 config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
-PATH = config.get('SETTINGS', 'Chromedriver-PATH')
+driver_PATH = config.get('SETTINGS', 'Chromedriver-PATH')
 
 
 try:
-    driver = webdriver.Chrome(PATH)
+    driver = webdriver.Chrome(driver_PATH)
     driver.get(link_page)
 
 except Exception as ex:
-    print("Error --> {} -- Restart the program.".format(ex))
+    print("Error --> {} -- URL might be wrong... Restart the program.".format(ex))
     driver.quit()
-    exit()
+    sys.exit()
 else:
     pass
 
@@ -63,7 +64,10 @@ except TimeoutException:
 def access():
     '''Small function with elements that log in to the profile.'''
 
-    driver.find_element_by_id('loginEmail').send_keys(profile), time.sleep(1)
+    config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
+    email_profile = config.get('ACCOUNT', 'User email')   
+
+    driver.find_element_by_id('loginEmail').send_keys(email_profile), time.sleep(1)
     driver.find_element_by_id('loginPassword').send_keys(password), time.sleep(1)
     driver.find_element_by_xpath('//*[@id="popin-signup"]/div/div/div[3]/div/form/p[2]/button').click()
 
@@ -96,7 +100,7 @@ def first_actions(i=None):
 
 
         for price in soup.find_all('td', 'order-amount'):
-            pricelist.append(int(price.text.split(",")[0]))
+            pricelist.append(str(price.text.split(",")[0]))
 
 
         for dat in soup.select('div.product-item'):
@@ -133,6 +137,31 @@ first_actions()
 
 time.sleep(1)
 
+
+
+initial_item = zip(namedress, date, pricelist)
+not_sold = []
+
+# removal of unsold items
+for item in initial_item:
+
+    for obj in item:
+        if 'Reso' in obj:
+            not_sold.append(item)
+        elif 'in vendita' in obj:
+            not_sold.append(item)
+        elif 'Item not sold or shipping.' in obj:
+            not_sold.append(item)
+
+
+# l --> stands for "less"
+l_price = []
+for money in not_sold:
+    l_price.append(int(money[2]))
+
+
+# the numbers go from str to int
+pricelist = [int(x) for x in pricelist]
 
 
 real_prices = []
@@ -173,20 +202,25 @@ for num in pricelist:
 
 
 
-sum_price = sum(pricelist)
-sum_price2 = sum(real_prices)
-
 totalitems = zip(namedress, date, pricelist, real_prices)
 
 
+sum_price = sum(pricelist)
+sum_price2 = sum(real_prices)
+sum_price3 = sum(l_price)
+
+
+# subtraction between the sum of the prices without commission and the sum of the unsold items (without c.)
+total_collection = sum_price - sum_price3
+
 
 count = 0
-
 for file in os.listdir(r'C:\Users\Utente\Desktop\Vestiaire Folder'):
     if file.endswith('.csv'):
         count += 1
 
 
+# file creation date
 date_object = datetime.date.today()
 folderv = r'C:\Users\Utente\Desktop\Vestiaire Folder'
 
@@ -204,8 +238,13 @@ with open(os.path.join(folderv, '{}  {} Vestiaire_doc.csv').format(count, date_o
     writer.writerow([sum_price])
     writer.writerow(["SUM PRICE WITH COMMISSION"])
     writer.writerow([sum_price2])
+    writer.writerow(['SUM TOTAL (WITH C.) MINUS UNSOLD ITEMS'])
+    writer.writerow([total_collection])
+    writer.writerow(['TOTAL PRICE OF ITEMS NOT SOLD'])
+    writer.writerow([sum_price3])
     newfile.close()
 
 
 
 driver.quit()
+
