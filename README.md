@@ -23,3 +23,6 @@ After you have downloaded your Webdriver, start the program and follow the instr
 
 ## Folder image
 
+<img src="ImageVesFolder/Screenshot-Vestiaire-Folder.png">
+
+Some files are less heavy because in the bot you can choose how many pages to analyze.
