@@ -97,8 +97,19 @@ To make the program work correctly you have to change the name of the folder tha
             except FileNotFoundError as ex:
                 print('\nERROR --> {}'.format(ex))
                 print('\nThe path you entered is incorrect ... check that it is written correctly.')
-
     
+    
+    def siteURL():
+        '''Function to enter the URL of the page that the sales data'''
+
+        global link_page
+        
+        link_page = input('\nEnter the url of the page with the price tables: ')
+        print("\nLittle check of what you wrote --> [ {} ]")
+        
+        return link_page
+
+
     count +=  1
 
 
@@ -107,8 +118,9 @@ To make the program work correctly you have to change the name of the folder tha
         
         config = ConfigParser()
 
-        config['ACCOUNT'] = {
-            'User email': user_email        
+        config['ACCOUNT 1'] = {
+            'User email': user_email,
+            'URL site': link_page  
         }
 
         config['SETTINGS'] = {
@@ -134,6 +146,6 @@ except Exception:
     user_account()
     email_check()
     check_path_exe()
+    siteURL()
     ini()
-
 
