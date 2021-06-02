@@ -24,23 +24,46 @@ Now press enter and paste the address in the space provided
 and conclude by pressing enter again and subsequently entering the other data to complete the operation.''')
 
 
+
 from ClassLoginVestiaire import Login
 
-link_page = Login.url("\nEnter the page address: ")
 password, question = Login.login_profile("\nEnter your profile password: ", "\nWrite <v> if you want to continue or <x> if you want to write the email and password again: ")
-pages = Login.pages_to_be_analyzed("\nEnter the number of pages you want to analyze: ")
 
+
+def pages_to_be_analyzed():
+    '''Function to insert the number of pages to be analyzed in "orders and sales"'''
+
+    while True:
+        
+        global pages
+        
+        try:
+            pages = int(input("\nNow you have to enter the pages you want to analyze in the table of items sold in the orders and sales section: "))
+            pages = pages + 1
+
+        except ValueError:
+            print("\nError - Careful! You don't have to enter a number in letters!")
+        
+        else:
+            break
+    
+    print('\nWell done!')
+    
+    return pages
+
+pages_to_be_analyzed()
 
 
 config = ConfigParser()
 
 config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
 driver_PATH = config.get('SETTINGS', 'Chromedriver-PATH')
+page_url = config.get('ACCOUNT 1', 'URL site')
 
 
 try:
     driver = webdriver.Chrome(driver_PATH)
-    driver.get(link_page)
+    driver.get(page_url)
 
 except Exception as ex:
     print("Error --> {} -- URL might be wrong... Restart the program.".format(ex))

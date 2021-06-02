@@ -1,4 +1,7 @@
+from language import LANGUAGES
+from google_trans_new import google_translator
 from configparser import ConfigParser
+import language as la
 import shutil
 import sys
 import os
@@ -24,7 +27,7 @@ while True:
             make_folder = os.mkdir(ves_folder)
             
         except FileExistsError:
-            print('''Careful, it seems that another folder has the same name as this one --> "Vestiaire Folder"
+            print('''\nCareful, it seems that another folder has the same name as this one --> "Vestiaire Folder"
 To make the program work correctly you have to change the name of the folder that already exists.''')
             sys.exit()
 
@@ -47,17 +50,50 @@ To make the program work correctly you have to change the name of the folder tha
 
         while True:
             
-            question = input("\nWrite <v> if you want to continue or <x> if you want to write the email and password again: ")
+            question = input("\nWrite <v> if you want to continue or <x> if you want to write the email again: ")
 
             if question == "v":
                 break
             
             elif question == "x":
-                print("\nReceived! rewrite your password.")
+                print("\nReceived! rewrite your email.")
                 user_account()
             
             elif question != "v" and question != "x":
                 print("\nMake sure you have written <v> and <x> correctly.")
+    
+
+    def siteURL():
+        '''Function to enter the URL of the page that the sales data'''
+
+        global link_page
+        
+        link_page = input('\nEnter the url of the page with the price tables: ')
+        
+        return link_page
+
+    
+    def site_language():
+        '''Function where to enter the language'''
+
+        global user_lang
+
+        while True:
+
+            user_lang = input('''\nSelect the language you use on the Vestiaire website by putting the two letters that identify it.
+\nHere are some examples:
+English -> 'en';
+French -> 'fr';
+German -> 'de';
+Italian -> 'it';
+Danish -> 'da'.
+Insert: ''')
+            if user_lang not in LANGUAGES.keys():
+                print('\nThe language you entered is incorrect ... check that the two letters represent the language well.')
+            else:
+                break
+
+        return user_lang
             
 
     def driver():
@@ -98,18 +134,6 @@ To make the program work correctly you have to change the name of the folder tha
                 print('\nERROR --> {}'.format(ex))
                 print('\nThe path you entered is incorrect ... check that it is written correctly.')
     
-    
-    def siteURL():
-        '''Function to enter the URL of the page that the sales data'''
-
-        global link_page
-        
-        link_page = input('\nEnter the url of the page with the price tables: ')
-        print("\nLittle check of what you wrote --> [ {} ]")
-        
-        return link_page
-
-
     count +=  1
 
 
@@ -120,7 +144,8 @@ To make the program work correctly you have to change the name of the folder tha
 
         config['ACCOUNT 1'] = {
             'User email': user_email,
-            'URL site': link_page  
+            'URL site': link_page,
+            'Language': user_lang
         }
 
         config['SETTINGS'] = {
@@ -145,7 +170,8 @@ except Exception:
     vestiaire_folder('Vestiaire Folder')
     user_account()
     email_check()
-    check_path_exe()
     siteURL()
+    site_language()
+    check_path_exe()
     ini()
 
