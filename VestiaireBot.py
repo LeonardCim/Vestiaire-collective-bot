@@ -1,6 +1,7 @@
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
+from google_trans_new import google_translator
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup as SOUP
 from configparser import ConfigParser
@@ -161,6 +162,28 @@ first_actions()
 time.sleep(1)
 
 
+def translate():
+    '''Function that translates two words in the list of articles. "Return" and "For sale"'''
+
+    global tt1
+    global tt2
+
+    config = ConfigParser()
+    config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
+    lang = config.get('ACCOUNT 1' ,'Language')
+
+    translator = google_translator()  
+    translate_text1 = translator.translate('Reso', lang_tgt=lang) 
+    translate_text2 = translator.translate('vendita', lang_tgt=lang)
+
+    tt1 = translate_text1
+    tt2 = translate_text2
+
+    return tt1, tt2
+
+translate()
+
+
 
 initial_item = zip(namedress, date, pricelist)
 not_sold = []
@@ -169,9 +192,9 @@ not_sold = []
 for item in initial_item:
 
     for obj in item:
-        if 'Reso' in obj:
+        if tt1 in obj:
             not_sold.append(item)
-        elif 'in vendita' in obj:
+        elif tt2 in obj:
             not_sold.append(item)
         elif 'Item not sold or shipping.' in obj:
             not_sold.append(item)

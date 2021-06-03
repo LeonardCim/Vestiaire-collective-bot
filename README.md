@@ -4,7 +4,8 @@ Hi, this program written in python takes and reorders your sales data on Vestiai
 ## Libraries
 
 Here you can see the various libraries I have used: 
-- Bs4 (BeautifulSoup) 
+- Bs4 (BeautifulSoup)
+- google_translator 
 - ConfigParser
 - Selenium 
 - Datetime 
