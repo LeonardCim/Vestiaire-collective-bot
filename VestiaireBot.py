@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup as SOUP
 from configparser import ConfigParser
 from selenium import webdriver
+import Func_ini as fi
 import run_once
 import datetime
 import shutil
@@ -17,13 +18,45 @@ import os
 
 
 
+print('''\nThis bot has three options:
+\n- Analyze the pages of dressing with sales data
+- Change the occunt with the data to access the page of dressing with sales
+- Add a new account with which to analyze the Vestiaire pricing page.''')
 
-print('''\nTo get started, go to Vestiaire Collective and click on your profile photo.
-Then click again on -> my items for sale <- and click again on -> orders and sales <-.
-At this point, copy the page address or URL.
-Now press enter and paste the address in the space provided
-and conclude by pressing enter again and subsequently entering the other data to complete the operation.''')
 
+def select():
+    '''Function with boot options'''
+
+    while True:
+
+        intro = input('''
+To start the analysis enter --> "s" (only the letter)
+To change the datas of the account enter --> "m"
+To add a new account enter  --> "a"
+insert: ''')
+        
+        if intro == 's':
+            break
+
+        elif intro == 'm':
+            fi.modify_ini()
+            
+            sys.exit()
+
+        elif intro == 'a':
+            fi.add_user_email()
+            fi.email_check()
+            fi.siteURL()
+            fi.site_language()
+            fi.add_acc_ini()
+            fi.name_acc_check()
+
+            sys.exit()
+
+        elif intro != 's' or intro != 'm' or intro != 'a':
+            print("\nComando non riconosciuto.\n's' --> analizza le vendite.\n'm' -> modifica il file ini.\n'a' --> aggiungi un nuovo account al file ini.")
+
+select()
 
 
 from ClassLoginVestiaire import Login
