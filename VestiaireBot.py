@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup as SOUP
 from configparser import ConfigParser
 from selenium import webdriver
 import Func_ini as fi
+import modify_ini as mi
 import run_once
 import datetime
 import shutil
@@ -39,7 +40,8 @@ insert: ''')
             break
 
         elif intro == 'm':
-            fi.modify_ini()
+            mi.select_account()
+            mi.modify_ini()
             
             sys.exit()
 
