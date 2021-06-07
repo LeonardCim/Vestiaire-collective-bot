@@ -37,6 +37,7 @@ To add a new account enter  --> "a"
 insert: ''')
         
         if intro == 's':
+            mi.check_status()
             break
 
         elif intro == 'm':
