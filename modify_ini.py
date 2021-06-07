@@ -83,7 +83,7 @@ Insert: ''')
             user_email = input('\nEnter the new url of the page with the price tables: ')
             link_page = input('\nEnter the url of the page with the price tables: ')
             new_lang = input('\nEnter the new language: ')
-            print("\nLittle check of what you wrote --> [ {} ] -- [ {} ]".format(user_email, link_page, new_lang))
+            print("\nLittle check of what you wrote --> [ {} ] -- [ {} ] -- [ {} ]".format(user_email, link_page, new_lang))
 
 
             config.set(acc_name, 'User email', user_email)

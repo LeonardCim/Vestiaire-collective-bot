@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup as SOUP
 from configparser import ConfigParser
 from selenium import webdriver
-import Func_ini as fi
+import create_ini as ci
 import modify_ini as mi
 import run_once
 import datetime
@@ -46,12 +46,12 @@ insert: ''')
             sys.exit()
 
         elif intro == 'a':
-            fi.add_user_email()
-            fi.email_check()
-            fi.siteURL()
-            fi.site_language()
-            fi.add_acc_ini()
-            fi.name_acc_check()
+            ci.add_user_email()
+            ci.email_check()
+            ci.siteURL()
+            ci.site_language()
+            ci.add_acc_ini()
+            ci.name_acc_check()
 
             sys.exit()
 

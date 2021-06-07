@@ -10,7 +10,7 @@ class Login:
     
     def __init__(self):
         
-        self.profile, self.password, self.question = self.login_profile()
+        self.password, self.question = self.login_profile()
     
     
     def login_profile(self, *args):
