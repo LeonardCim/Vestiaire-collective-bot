@@ -15,15 +15,14 @@ def select_account():
     while True:
 
         acc_name = input('\nEnter the name of the account you want to change: ')
-        
-        if acc_name in sections:
-            print('\nWell done!')
-            break
-        else:
+
+        if acc_name not in sections:
             print('\nCareful, the name you entered is not present in the file. Make sure you have spelled the account name correctly.')
+        else:
+            print('Well done!')
+            break
     
     return acc_name
-
 
 
 def modify_ini():
