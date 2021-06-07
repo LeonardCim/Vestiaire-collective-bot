@@ -118,13 +118,31 @@ try:
 except TimeoutException:
     pass
 
+def account_selector():
+    '''Function that controls which account is active'''
+
+    global Account
+
+    config = ConfigParser()
+    config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
+    sec_name = config.sections()
+
+    for account in sec_name:
+        if account.startswith('ACC'):
+            if config[account]['Status'] == 'active':
+                Account = account
+            else:
+                pass
+    return Account
+
+account_selector()
 
 
 def access():
     '''Small function with elements that log in to the profile.'''
 
     config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
-    email_profile = config.get('ACCOUNT', 'User email')   
+    email_profile = config.get(Account, 'User email')   
 
     driver.find_element_by_id('loginEmail').send_keys(email_profile), time.sleep(1)
     driver.find_element_by_id('loginPassword').send_keys(password), time.sleep(1)
@@ -205,7 +223,7 @@ def translate():
 
     config = ConfigParser()
     config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
-    lang = config.get('ACCOUNT 1' ,'Language')
+    lang = config.get(Account ,'Language')
 
     translator = google_translator()  
     translate_text1 = translator.translate('Reso', lang_tgt=lang) 

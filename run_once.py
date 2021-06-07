@@ -1,7 +1,6 @@
-from language import LANGUAGES
-from google_trans_new import google_translator
 from configparser import ConfigParser
-import language as la
+from language import LANGUAGES 
+import create_ini as ci
 import shutil
 import sys
 import os
@@ -33,68 +32,6 @@ To make the program work correctly you have to change the name of the folder tha
 
         return make_folder, ves_folder
 
-    
-    def user_account():
-        '''Function for entering user data'''
-
-        global user_email
-        
-        user_email = input('\nEnter your email account: ')
-        print("\nLittle check of what you wrote --> [ {} ]".format(user_email))
-        
-        return user_email
-
-    
-    def email_check():
-        '''Function that verifies the user's email'''
-
-        while True:
-            
-            question = input("\nWrite <v> if you want to continue or <x> if you want to write the email again: ")
-
-            if question == "v":
-                break
-            
-            elif question == "x":
-                print("\nReceived! rewrite your email.")
-                user_account()
-            
-            elif question != "v" and question != "x":
-                print("\nMake sure you have written <v> and <x> correctly.")
-    
-
-    def siteURL():
-        '''Function to enter the URL of the page that the sales data'''
-
-        global link_page
-        
-        link_page = input('\nEnter the url of the page with the price tables: ')
-        
-        return link_page
-
-    
-    def site_language():
-        '''Function where to enter the language'''
-
-        global user_lang
-
-        while True:
-
-            user_lang = input('''\nSelect the language you use on the Vestiaire website by putting the two letters that identify it.
-\nHere are some examples:
-English -> 'en';
-French -> 'fr';
-German -> 'de';
-Italian -> 'it';
-Danish -> 'da'.
-Insert: ''')
-            if user_lang not in LANGUAGES.keys():
-                print('\nThe language you entered is incorrect ... check that the two letters represent the language well.')
-            else:
-                break
-
-        return user_lang
-            
 
     def driver():
         '''Function where to enter the path of the webdriver'''
@@ -142,16 +79,18 @@ Insert: ''')
         
         config = ConfigParser()
 
-        config['ACCOUNT 1'] = {
-            'User email': user_email,
-            'URL site': link_page,
-            'Language': user_lang
-        }
-
         config['SETTINGS'] = {
             'Chromedriver-PATH': driver_path,
             'count': count
         }
+
+        config['ACCOUNT 0'] = {
+            'User email': ci.user_email,
+            'URL site': ci.link_page,
+            'Language': ci.user_lang,
+            'Status': 'active'
+        }
+
 
         with open(os.path.join(ves_folder, 'vestiaire_ini.ini'), 'w+') as file:
             config.write(file)
@@ -168,10 +107,11 @@ try:
 
 except Exception:
     vestiaire_folder('Vestiaire Folder')
-    user_account()
-    email_check()
-    siteURL()
-    site_language()
+    ci.add_user_email()
+    ci.email_check()
+    ci.siteURL()
+    ci.site_language()
     check_path_exe()
     ini()
-
+    
+    sys.exit()

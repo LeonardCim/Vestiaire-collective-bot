@@ -1,5 +1,7 @@
 from configparser import ConfigParser
+from os import name
 import language as la
+import sys
 
 
 
@@ -76,39 +78,35 @@ def site_language():
 
 
 
+def count_ini_acc():
+
+    global acc_count
+
+    config = ConfigParser()
+    config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
+    
+    acc_count = 0
+    for account_name in config.sections():
+        if account_name.startswith('ACC'):
+            acc_count += 1
+    
+    return acc_count
+
+
+
 def add_acc_ini():
     '''Function where to add a new account to the ini file'''
 
     config = ConfigParser()
+    
+    name_acc = 'ACCOUNT {}'.format(acc_count)
 
-    choose_name = input('\nChoose the name of the new account: ')
-    print("\nLittle check of what you wrote --> [ {} ]".format(choose_name))
-
-    config[choose_name] = {
-        'User email': user_email,
-        'URL site': link_page,
-        'Language': user_lang
-    }
+    config.add_section(name_acc)
+    config.set(name_acc, 'User email', user_email)
+    config.set(name_acc, 'URL site', link_page)
+    config.set(name_acc, 'Language', user_lang)
+    config.set(name_acc, 'Status', 'disabled')
 
     with open(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini', 'a') as file:
         config.write(file)
-
-
-def name_acc_check():
-    '''Function that verifies the user's email'''
-
-    while True:
-        
-        question = input("\nWrite <v> if you want to continue or <x> if you want to write the name of the account again: ")
-
-        if question == "v":
-            break
-        
-        elif question == "x":
-            print("\nReceived! rewrite your account name.")
-            add_acc_ini()
-        
-        elif question != "v" and question != "x":
-            print("\nMake sure you have written <v> and <x> correctly.")
-
 
