@@ -310,16 +310,62 @@ for num in pricelist:
 
 
 
+#---------------------------------------------------------------------------------------------#
+
+real_l_price = []
+
+com_base = 15
+
+for num in l_price:
+
+    if num <= 150:
+        real_l_price.append(num - 15)
+
+    elif num > 150 and num <= 210:
+        real_l_price.append(int(num * 0.85))
+
+    elif num > 210 and num <= 300:
+        a = (num-210)/10+com_base
+        b = 100 - a
+        c = b*0.01
+        d = round(c, 2)
+        e = num*d
+        real_l_price.append(int(e))
+
+    elif num > 300 and num <= 2000:
+        real_l_price.append(int(num*0.75))
+
+    elif num > 2000 and num <= 4000:
+        real_l_price.append(int(num*0.77))
+
+    elif num > 4000 and num <= 5000:
+        real_l_price.append(int(num*0.78))
+
+    elif num > 5000 and num <= 7500:
+        real_l_price.append(int(num*0.80))
+
+    elif num > 7500:
+        real_l_price.append(int(num - 1500))
+
+
+
 totalitems = zip(namedress, date, pricelist, real_prices)
 
 
-sum_price = sum(pricelist)
-sum_price2 = sum(real_prices)
-sum_price3 = sum(l_price)
+sum_price = sum(pricelist)  # total price without commission
+
+sum_price2 = sum(real_prices)  # total price with commission 
+
+sum_price3 = sum(l_price)  # total sum of items not sold without commission
+
+sum_price4 = sum(real_l_price)  # total sum of items not sold with commission
 
 
 # subtraction between the sum of the prices without commission and the sum of the unsold items (without c.)
 total_collection = sum_price - sum_price3
+
+# subtraction between the sum of the prices with commission and the sum of the unsold items (with c.)
+total_collection_with_c = sum_price2 - sum_price4
 
 
 count = 0
@@ -342,11 +388,11 @@ with open(os.path.join(folderv, '{}  {} Vestiaire_doc.csv').format(count, date_o
         writer.writerow(row)
 
     writer.writerow(["-----------------------"])
-    writer.writerow(["SUM PRICE WITHOUT COMMISSION"])
+    writer.writerow(["SUM PRICE WITHOUT COMMISSION AND  WITHOUT UNSOLD ITEMS"])
     writer.writerow([sum_price])
-    writer.writerow(["SUM PRICE WITH COMMISSION"])
-    writer.writerow([sum_price2])
-    writer.writerow(['SUM TOTAL (WITH C.) MINUS UNSOLD ITEMS'])
+    writer.writerow(["SUM REAL PRICE WITH COMMISSION AND WITHOUT UNSOLD ITEMS"])
+    writer.writerow([total_collection_with_c])
+    writer.writerow(['SUM TOTAL (WITHOUT C.) MINUS UNSOLD ITEMS (WITHOUT C.'])
     writer.writerow([total_collection])
     writer.writerow(['TOTAL PRICE OF ITEMS NOT SOLD'])
     writer.writerow([sum_price3])
@@ -355,4 +401,3 @@ with open(os.path.join(folderv, '{}  {} Vestiaire_doc.csv').format(count, date_o
 
 
 driver.quit()
-
