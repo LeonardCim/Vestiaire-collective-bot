@@ -1,8 +1,5 @@
 from configparser import ConfigParser
-from os import name
 import language as la
-import sys
-
 
 
 def add_user_email():
@@ -58,7 +55,6 @@ def site_language():
 
     global user_lang
 
-
     while True:
 
         user_lang = input('''\nSelect the language you use on the Vestiaire website by putting the two letters that identify it.
@@ -79,6 +75,7 @@ def site_language():
 
 
 def count_ini_acc():
+    '''Function that counts how many accounts are present in the ini file'''
 
     global acc_count
 

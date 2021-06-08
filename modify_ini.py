@@ -1,4 +1,5 @@
-from configparser import ConfigParser 
+from configparser import ConfigParser
+import sys
 
 
 def select_account():
@@ -47,7 +48,7 @@ def modify_ini():
     while True:
 
         options = input('''\nHi, here you can change your current account.
-\nEnter "e" to edit the email.
+\nEnter "e" to edit the e-mail.
 Enter "u" to change the url of the sales data page.
 Enter 'la' to change the language.
 Enter 's' to change the status of the account.
@@ -55,7 +56,7 @@ Enter "all" to change both.
 Insert: ''')
 
 
-        if options == 'e':
+        if options == 'e':   #'e' stands for e-mail
 
             user_email = input('\nEnter the new url of the page with the price tables: ')
             print("\nLittle check of what you wrote --> [ {} ]".format(user_email))
@@ -66,7 +67,7 @@ Insert: ''')
             break
             
 
-        elif options == 'u':
+        elif options == 'u':   #'u' stands for URL
 
             link_page = input('\nEnter the url of the page with the price tables: ')
             print("\nLittle check of what you wrote --> [ {} ]".format(link_page))
@@ -77,7 +78,7 @@ Insert: ''')
             break
 
 
-        elif options == 'la':
+        elif options == 'la':   #'la' stands for language
 
             new_lang = input('Enter the new language: ')
             print("\nLittle check of what you wrote --> [ {} ]".format(new_lang))
@@ -88,7 +89,7 @@ Insert: ''')
             break
 
 
-        elif options == 's':
+        elif options == 's':   #'s' stands for status
 
             print("\nEnter 'active' to activate the account, or 'disabled' to deactivate it.")
 
@@ -124,7 +125,7 @@ Insert: ''')
             user_email = input('\nEnter the new url of the page with the price tables: ')
             link_page = input('\nEnter the url of the page with the price tables: ')
             new_lang = input('\nEnter the new language: ')
-            print("\nLittle check of what you wrote --> [ {} ] -- [ {} ]".format(user_email, link_page, new_lang))
+            print("\nLittle check of what you wrote --> [ {} ] -- [ {} ] -- [ {} ]".format(user_email, link_page, new_lang))
 
 
             config.set(acc_name, 'User email', user_email)
@@ -134,8 +135,8 @@ Insert: ''')
                 config.write(file)
             break
             
-        elif options != "u" or options != "e" or options != 'la' or options != "all":
-            print("\nCareful, the command you entered is incorrect.\n'e' -> email,\n'u' -> site URL,\n'la --> language,\n'all' -> both.")
+        elif options != "u" or options != "e" or options != 'la' or options != 's' or options != "all":
+            print("\nCareful, the command you entered is incorrect.\n'e' -> email,\n'u' -> site URL,\n'la --> language,\n 's' --> status active/disabled,\n'all' -> both.")
 
 
 
@@ -155,7 +156,7 @@ def check_status():
         print('\nWell done!')
     else:
         print('You have too many active accounts !!! You can only leave one active.')
-        exit()
+        sys.exit()
 
 
 

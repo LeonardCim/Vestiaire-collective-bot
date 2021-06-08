@@ -1,3 +1,4 @@
+import configparser
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
@@ -21,45 +22,45 @@ import os
 
 print('''\nThis bot has three options:
 \n- Analyze the pages of dressing with sales data
-- Change the occunt with the data to access the page of dressing with sales
+- Change the account with the data to access the page of dressing with sales
 - Add a new account with which to analyze the Vestiaire pricing page.''')
 
 
-def select():
-    '''Function with boot options'''
+def select_options_bot():
+    '''Function with bot options'''
 
     while True:
 
         intro = input('''
-To start the analysis enter --> "s" (only the letter)
-To change the datas of the account enter --> "m"
+To start the analysis enter --> "s" (only the letter) 
+To change the datas of the account enter --> "m" 
 To add a new account enter  --> "a"
-insert: ''')
+insert: ''') 
         
-        if intro == 's':
+        if intro == 's':       #'S' stands for scrape 
             mi.check_status()
             break
 
-        elif intro == 'm':
+        elif intro == 'c':     #'c' stands for change
             mi.select_account()
             mi.modify_ini()
             
             sys.exit()
 
-        elif intro == 'a':
+        elif intro == 'a':      #'a' is about to add
             ci.add_user_email()
             ci.email_check()
             ci.siteURL()
             ci.site_language()
+            ci.count_ini_acc()
             ci.add_acc_ini()
-            ci.name_acc_check()
 
             sys.exit()
 
-        elif intro != 's' or intro != 'm' or intro != 'a':
-            print("\nComando non riconosciuto.\n's' --> analizza le vendite.\n'm' -> modifica il file ini.\n'a' --> aggiungi un nuovo account al file ini.")
+        elif intro != 's' or intro != 'c' or intro != 'a':
+            print("\nUnrecognized command.\n's' -> analyze sales. \n'm '-> edit ini file. \n'a' -> add new account to ini file.")
 
-select()
+select_options_bot()
 
 
 from ClassLoginVestiaire import Login
@@ -91,11 +92,32 @@ def pages_to_be_analyzed():
 pages_to_be_analyzed()
 
 
-config = ConfigParser()
+
+def account_selector():
+    '''Function that controls which account is active'''
+
+    global Account
+
+    config = ConfigParser()
+    config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
+    sec_name = config.sections()
+
+    for account in sec_name:
+        if account.startswith('ACC'):
+            if config[account]['Status'] == 'active':
+                Account = account
+            else:
+                pass
+    return Account
+
+account_selector()
+
+
+config = configparser()
 
 config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
-driver_PATH = config.get('SETTINGS', 'Chromedriver-PATH')
-page_url = config.get('ACCOUNT 1', 'URL site')
+driver_PATH = config.get(Account, 'Chromedriver-PATH')
+page_url = config.get(Account, 'URL site')
 
 
 try:
@@ -119,29 +141,12 @@ try:
 except TimeoutException:
     pass
 
-def account_selector():
-    '''Function that controls which account is active'''
-
-    global Account
-
-    config = ConfigParser()
-    config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
-    sec_name = config.sections()
-
-    for account in sec_name:
-        if account.startswith('ACC'):
-            if config[account]['Status'] == 'active':
-                Account = account
-            else:
-                pass
-    return Account
-
-account_selector()
 
 
-def access():
+def account_login():
     '''Small function with elements that log in to the profile.'''
 
+    config = configparser()
     config.read(r'C:\Users\Utente\Desktop\Vestiaire Folder\vestiaire_ini.ini')
     email_profile = config.get(Account, 'User email')   
 
@@ -155,9 +160,11 @@ def access():
     )
     orders_and_sales.click()
 
-access()
+account_login()
 
 
+
+#From this point the data collection begins
 
 namedress = []
 pricelist = []
@@ -217,9 +224,9 @@ time.sleep(1)
 
 
 def translate():
-    '''Function that translates two words in the list of articles. "Return" and "For sale"'''
+    '''Function that translates two words in the list of articles. "Return" and "sale"'''
 
-    global tt1
+    global tt1 #translated text
     global tt2
 
     config = ConfigParser()
