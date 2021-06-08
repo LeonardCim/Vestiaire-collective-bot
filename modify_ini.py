@@ -22,6 +22,8 @@ def select_account():
 
         acc_name = input('\nEnter the name of the account you want to change: ')
 
+        acc_name = acc_name.strip()
+
         if acc_name not in sections:
             print('\nCareful, the name you entered is not present in the file. Make sure you have spelled the account name correctly.')
         else:
@@ -54,7 +56,8 @@ Enter 'la' to change the language.
 Enter 's' to change the status of the account.
 Enter "all" to change both.
 Insert: ''')
-
+        
+        options = options.strip()
 
         if options == 'e':   #'e' stands for e-mail
 
@@ -102,6 +105,8 @@ Insert: ''')
             while True:
 
                 acc_status = input('\nChange your account status to activate or deactivate it: ')
+
+                acc_status = acc_status.strip()
 
                 if acc_status == 'active' or acc_status == 'disabled':
                     print('\nwell done!')

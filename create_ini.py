@@ -65,6 +65,9 @@ def site_language():
     Italian -> 'it';
     Danish -> 'da'.
     Insert: ''')
+
+        user_lang = user_lang.strip()
+
         if user_lang not in la.LANGUAGES.keys():
             print('\nThe language you entered is incorrect ... check that the two letters represent the language well.')
         else:

@@ -36,6 +36,8 @@ To start the analysis enter --> "s" (only the letter)
 To change the datas of the account enter --> "m" 
 To add a new account enter  --> "a"
 insert: ''') 
+
+        intro = intro.strip()
         
         if intro == 's':       #'S' stands for scrape 
             mi.check_status()
@@ -64,7 +66,6 @@ select_options_bot()
 
 
 from ClassLoginVestiaire import Login
-
 password, question = Login.login_profile("\nEnter your profile password: ", "\nWrite <v> if you want to continue or <x> if you want to write the email and password again: ")
 
 
