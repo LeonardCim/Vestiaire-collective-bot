@@ -1,5 +1,5 @@
 from configparser import ConfigParser
-import language as la
+import json
 
 
 def add_user_email():
@@ -55,6 +55,12 @@ def site_language():
 
     global user_lang
 
+    json_file = open(r'C:\Users\Utente\Desktop\venv bot vestiaire\language.json', 'r')
+    json_data = json_file.read()
+
+    lang_obj = json.loads(json_data)
+    
+
     while True:
 
         user_lang = input('''\nSelect the language you use on the Vestiaire website by putting the two letters that identify it.
@@ -68,7 +74,7 @@ def site_language():
 
         user_lang = user_lang.strip()
 
-        if user_lang not in la.LANGUAGES.keys():
+        if user_lang not in lang_obj.keys():
             print('\nThe language you entered is incorrect ... check that the two letters represent the language well.')
         else:
             break

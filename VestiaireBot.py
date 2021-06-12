@@ -1,4 +1,3 @@
-import configparser
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
@@ -9,9 +8,9 @@ from configparser import ConfigParser
 from selenium import webdriver
 import create_ini as ci
 import modify_ini as mi
+import configparser
 import run_once
 import datetime
-import shutil
 import time
 import sys
 import csv

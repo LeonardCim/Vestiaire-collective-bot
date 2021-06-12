@@ -1,5 +1,4 @@
 from configparser import ConfigParser
-from language import LANGUAGES 
 import create_ini as ci
 import shutil
 import sys

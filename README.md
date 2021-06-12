@@ -10,6 +10,7 @@ Here you can see the various libraries I have used:
 - Selenium 
 - Datetime 
 - Shutil
+- json
 - sys
 - Csv 
 - Os  
